@@ -8,4 +8,4 @@
 
 2. A screenshot of the console output from your local CKB Indexer after it has fully synchronized with the local Testnet CKB Node.
 
-![Alt text]https://github.com/leomanza/nervos-hackathon/blob/master/task-0/ckb-indexer-sync-latest-block.png)
+![Alt text](https://github.com/leomanza/nervos-hackathon/blob/master/task-0/ckb-indexer-sync-latest-block.png)
