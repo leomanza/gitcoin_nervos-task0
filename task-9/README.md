@@ -1,7 +1,7 @@
 ## Task Submission
 1. A screenshot of the console output immediately after running the withdraw command.
 
-![Alt text](https://github.com/leomanza/nervos-hackathon/blob/master/task-8/withdraw.png)
+![Alt text](https://github.com/leomanza/nervos-hackathon/blob/master/task-9/withdraw.png)
 
 2. The Ethereum address that you've used for your Layer 2 account (in text format).
 
