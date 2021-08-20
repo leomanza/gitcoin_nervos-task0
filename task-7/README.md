@@ -5,15 +5,15 @@
 
 2. Link to the GitHub repository with your application which has been ported to Godwoken. 
 
-https://github.com/leomanza/nervos-hackathon/app-on-godwoken
+https://github.com/leomanza/nervos-hackathon/tree/master/app-on-godwoken
 
 3. Smart Contract deployed 
-    3.1. transaction hash of the deployment transaction: 
-        0x8b6b0d8898dd80b21bf0d69806e268532b7d12175d5d2d93e176de5448be6c2e
-    3.2. the deployed contract address
-        0x5930777d2be36806522d799a5469bd81776a43A8
-    3.3. ABI of the deployed smart contract
-    [
+* transaction hash of the deployment transaction: 
+    0x8b6b0d8898dd80b21bf0d69806e268532b7d12175d5d2d93e176de5448be6c2e
+* the deployed contract address
+    0x5930777d2be36806522d799a5469bd81776a43A8
+* ABI of the deployed smart contract
+    ```json[
     {
       "inputs": [],
       "stateMutability": "payable",
@@ -64,4 +64,4 @@ https://github.com/leomanza/nervos-hackathon/app-on-godwoken
       "stateMutability": "view",
       "type": "function"
     }
-  ]
+  ]```
