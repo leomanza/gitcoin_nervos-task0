@@ -8,12 +8,12 @@ import './app.scss';
 import 'react-toastify/dist/ReactToastify.css';
 import { PolyjuiceHttpProvider } from '@polyjuice-provider/web3';
 import { AddressTranslator } from 'nervos-godwoken-integration';
-
 import { TodosWrapper } from '../lib/contracts/TodosWrapper';
+import { SudtERC20ProxyWrapper } from '../lib/contracts/SudtERC20ProxyWrapper';
 import { CONFIG } from '../config';
 
 async function createWeb3() {
-    // Modern dapp browsers...
+    
     if ((window as any).ethereum) {
         const godwokenRpcUrl = CONFIG.WEB3_PROVIDER_URL;
         const providerConfig = {
@@ -44,10 +44,17 @@ export function App() {
     const [contract, setContract] = useState<TodosWrapper>();
     const [accounts, setAccounts] = useState<string[]>();
     const [l2Balance, setL2Balance] = useState<bigint>();
+    const [proxyContract, setProxyContract] = useState<SudtERC20ProxyWrapper>();
+    const [layer2ckETHBalance, setLayer2ckETHBalance] = useState<bigint>();
     const [existingContractIdInputValue, setExistingContractIdInputValue] = useState<string>();
+    const [existingERC20ContractIdInputValue, setExistingERC20ContractIdInputValue] = useState<
+        string
+    >();
+
     const [storedValue, setStoredValue] = useState<string[] | undefined>();
     const [deployTxHash, setDeployTxHash] = useState<string | undefined>();
     const [polyjuiceAddress, setPolyjuiceAddress] = useState<string | undefined>();
+    const [layer2DepositAddress, setLayer2DepositAddress] = useState<string | undefined>();
     const [transactionInProgress, setTransactionInProgress] = useState(false);
     const toastId = React.useRef(null);
     const [newStoredStringInputValue, setNewStoredStringInputValue] = useState<
@@ -55,13 +62,34 @@ export function App() {
     >();
 
     useEffect(() => {
-        if (accounts?.[0]) {
+        async function getAddreses() {
             const addressTranslator = new AddressTranslator();
-            setPolyjuiceAddress(addressTranslator.ethAddressToGodwokenShortAddress(accounts?.[0]));
+            setPolyjuiceAddress(addressTranslator.ethAddressToGodwokenShortAddress(accounts[0]));
+            const depositAddress = await addressTranslator.getLayer2DepositAddress(
+                web3,
+                accounts[0]
+            );
+            setLayer2DepositAddress(depositAddress.addressString);
+            if (existingERC20ContractIdInputValue) {
+                setExistingERC20ProxyContractAddress(existingERC20ContractIdInputValue);
+            }
+        }
+        if (accounts?.[0]) {
+            getAddreses();
         } else {
             setPolyjuiceAddress(undefined);
         }
     }, [accounts?.[0]]);
+
+    useEffect(() => {
+        if (proxyContract) {
+            async function getLayer2ETHBalance() {
+                const _l2ckETHBalance = await proxyContract.getBalanceOf(polyjuiceAddress, account);
+                setLayer2ckETHBalance(_l2ckETHBalance);
+            }
+            getLayer2ETHBalance();
+        }
+    }, [proxyContract]);
 
     useEffect(() => {
         if (transactionInProgress && !toastId.current) {
@@ -110,6 +138,29 @@ export function App() {
             setTransactionInProgress(false);
         }
     }
+    async function deployERC20ProxyContract() {
+        const _contract = new SudtERC20ProxyWrapper(web3);
+
+        try {
+            setDeployTxHash(undefined);
+            setTransactionInProgress(true);
+
+            const transactionHash = await _contract.deploy(account);
+
+            setExistingERC20ProxyContractAddress(_contract.address);
+            toast(
+                'Successfully deployed a smart-contract. You can now proceed to get or set the value in a smart contract.',
+                { type: 'success' }
+            );
+        } catch (error) {
+            console.error(error);
+            toast.error(
+                'There was an error sending your transaction. Please check developer console.'
+            );
+        } finally {
+            setTransactionInProgress(false);
+        }
+    }
 
     async function getStoredValue() {
         const value = await contract.getStoredValue(account);
@@ -124,6 +175,13 @@ export function App() {
 
         setContract(_contract);
         setStoredValue(undefined);
+    }
+
+    async function setExistingERC20ProxyContractAddress(contractAddress: string) {
+        const _contract = new SudtERC20ProxyWrapper(web3);
+        _contract.useDeployed(contractAddress.trim());
+
+        setProxyContract(_contract);
     }
 
     async function setNewStoredValue() {
@@ -178,12 +236,28 @@ export function App() {
             <b>{l2Balance ? (l2Balance / 10n ** 8n).toString() : <LoadingIndicator />} CKB</b>
             <br />
             <br />
-            Deployed contract address: <b>{contract?.address || '-'}</b> <br />
-            Deploy transaction hash: <b>{deployTxHash || '-'}</b>
+            {layer2ckETHBalance && (
+                <p>Layer 2 ckETH balance: {layer2ckETHBalance.toString()} Wei</p>
+            )}
             <br />
+            <br />
+            {layer2DepositAddress && (
+                <div>
+                    <p>Layer2 Deposit Address: {layer2DepositAddress}</p>
+                    <a
+                        href="https://force-bridge-test.ckbapp.dev/bridge/Ethereum/Nervos?xchain-asset=0x0000000000000000000000000000000000000000"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Deposit to Layer2 using Force bridge
+                    </a>
+                </div>
+            )}
+            <br />
+           
             <hr />
             <p>
-                The button below will deploy a smart contract where you can add numbers
+                The button below will deploy the smart contract where you can add numbers
                 values. After the contract is deployed you can either read stored values from smart
                 contract or add a new one. You can do that using the interface below.
             </p>
@@ -192,6 +266,7 @@ export function App() {
             </button>
             &nbsp;or&nbsp;
             <input
+                id='contract'
                 placeholder="Existing contract id"
                 onChange={e => setExistingContractIdInputValue(e.target.value)}
             />
@@ -201,6 +276,34 @@ export function App() {
             >
                 Use existing contract
             </button>
+            <br />
+            <br />
+            Deployed contract address: <b>{contract?.address || '-'}</b> <br />
+            <br />
+            <hr />
+            <p>The button below will deploy a ERC20 proxy contract.</p>
+            <button onClick={deployERC20ProxyContract}>
+                Deploy contract
+            </button>
+            &nbsp;or&nbsp;
+            <input
+            id='erc20Contract'
+                placeholder="Existing contract id"
+                onChange={e => setExistingERC20ContractIdInputValue(e.target.value)}
+            />
+            <button
+                disabled={!existingERC20ContractIdInputValue}
+                onClick={() =>
+                    setExistingERC20ProxyContractAddress(existingERC20ContractIdInputValue)
+                }
+            >
+                Use existing contract
+            </button>
+            <br />
+            <br />
+            Deployed contract address: <b>{proxyContract?.address || '-'}</b> <br />
+            <br />
+            <hr />
             <br />
             <br />
             <button onClick={getStoredValue} disabled={!contract}>
