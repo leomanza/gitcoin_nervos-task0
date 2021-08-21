@@ -123,16 +123,22 @@ const tx = await this.contract.methods.add(value).send({
 ```
 
 ### Compile the contract and run the app
+Open a new terminal an run:
 ```
 cd app-on-godwoken
 yarn
 yarn build
 yarn ui
-
 ```
-- Open http://localhost:3000 in a browser to run your app.
-- Change your MetaMask network to *Godwoken Testnet*
-- You can now try out the application running on the Godwoken Testnet. Congrats!
+Open another terminal to run ganache
+```
+cd app-on-godwoken
+yarn start:ganache
+```
+
+1. Open http://localhost:3000 in a browser to run your app.
+2. Change your MetaMask network to *Godwoken Testnet*
+3. You can now try out the application running on the Godwoken Testnet. Congrats!
 
 ![Alt text](https://github.com/leomanza/nervos-hackathon/blob/master/task-12/app_running.gif)
 
