@@ -58,14 +58,14 @@ Godwoken is designed to be used with a second framework which defines the progra
  2. Install dependencies
  ```
  yarn
- ````
+ ```
 
  ### Install Polyjuice Dependencies
  Install the required dependencies for working with Godwoken and Polyjuice.
- ````
+  ```
  cd app-on-godwoken
  yarn add @polyjuice-provider/web3@0.0.1-rc7 nervos-godwoken-integration@0.0.6
- ```
+  ```
  - @polyjuice-provider/web3 is a custom Polyjuice web3 provider. It is required for interaction with Nervos' Layer 2 smart contracts.
  - nervos-godwoken-integration is a tool that can generate Polyjuice address based on your Ethereum address. You might  be required to use Polyjuice address if you store values mapped to addresses in your contracts.
 
