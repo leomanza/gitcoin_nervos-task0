@@ -103,22 +103,17 @@ const providerConfig = {
 const provider = new PolyjuiceHttpProvider(godwokenRpcUrl, providerConfig);
 const web3 = new Web3(provider);
 ```
-4. The Ethereum app display the balance on ETH, wich is converted from wei. Nervos Layer 2 balance is obtained on Shannon. 1 CKB equals 10``**``8 shannons.
-   Replace **toEth** function and calculate the balance from shannon to CKB:
-   ```
-   const toCkb = (shannon: bigint) => (shannon / 10n ** 8n).toString();
-   ```
-5. Set High Gas Limit
+4. Set High Gas Limit
 Godwoken requires the gas limit to be set when sending transactions. This may not always be the case in the future, but it is a requirement for the current version on the Testnet.
 To accomodate for this, we can make a simple change to default the gas limit to 6000000 for the user when they make transactions.
 
-1. Create a constant that contains the gas property used by MetaMask and include the code above in the top region of \src\lib\contracts\TodosWrapper.ts
+ 1. Create a constant that contains the gas property used by MetaMask and include the code above in the top region of \src\lib\contracts\TodosWrapper.ts
 ```
 const DEFAULT_SEND_OPTIONS = {
     gas: 6000000
 };
 ```
-2. Add the constant into the object passed to *add* function as the default values:
+ 2. Add the constant into the object passed to *add* function as the default values:
 ```
 const tx = await this.contract.methods.add(value).send({
     ...DEFAULT_SEND_OPTIONS,
@@ -127,6 +122,13 @@ const tx = await this.contract.methods.add(value).send({
 });
 ```
 
+### Replace balance function
+ The Ethereum app display the balance on ETH, wich is converted from wei. Nervos Layer 2 balance is obtained on Shannon. 1 CKB equals 10``**``8 shannons.
+ 1. Replace **toEth** function and calculate the balance from shannon to CKB:
+ ```
+ const toCkb = (shannon: bigint) => (shannon / 10n ** 8n).toString();
+ ```
+ 2. Replace ETH display text to CKB
 ### Compile the contract and run the app
 Open a new terminal an run:
 ```
