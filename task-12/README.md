@@ -38,7 +38,7 @@ Godwoken is designed to be used with a second framework which defines the progra
  Block Explorer URL: <Leave Empty>
  ```
 ### Setup your existing dApp
- We will go through porting an existing Ethereum DApp [TodoApp](https://github.com/leomanza/nervos-hackathon/tree/master/app-on-godwoken) to Polyjuice.
+ We will go through porting an existing Ethereum DApp [TodoApp](https://github.com/leomanza/nervos-hackathon/tree/master/app-ethereum) to Polyjuice.
 
  Prerequisites for your dev environment:
  - Build Tools
@@ -103,7 +103,12 @@ const providerConfig = {
 const provider = new PolyjuiceHttpProvider(godwokenRpcUrl, providerConfig);
 const web3 = new Web3(provider);
 ```
-4. Set High Gas Limit
+4. The Ethereum app display the balance on ETH, wich is converted from wei. Nervos Layer 2 balance is obtained on Shannon. 1 CKB equals 10``**``8 shannons.
+   Replace **toEth** function and calculate the balance from shannon to CKB:
+   ```
+   const toCkb = (shannon: bigint) => (shannon / 10n ** 8n).toString();
+   ```
+5. Set High Gas Limit
 Godwoken requires the gas limit to be set when sending transactions. This may not always be the case in the future, but it is a requirement for the current version on the Testnet.
 To accomodate for this, we can make a simple change to default the gas limit to 6000000 for the user when they make transactions.
 
