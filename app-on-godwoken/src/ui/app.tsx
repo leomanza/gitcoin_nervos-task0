@@ -222,6 +222,8 @@ export function App() {
         })();
     });
 
+    const toCkb = (shannon: bigint) => (shannon / 10n ** 8n).toString();
+
     const LoadingIndicator = () => <span className="rotating-icon">⚙️</span>;
 
     return (
@@ -233,7 +235,7 @@ export function App() {
             <br />
             <br />
             Nervos Layer 2 balance:{' '}
-            <b>{l2Balance ? (l2Balance / 10n ** 8n).toString() : <LoadingIndicator />} CKB</b>
+            <b>{l2Balance ? toCkb(l2Balance) : <LoadingIndicator />} CKB</b>
             <br />
             <br />
             {layer2ckETHBalance && (
