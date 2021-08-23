@@ -150,6 +150,7 @@ yarn start:ganache
 ![Alt text](https://github.com/leomanza/nervos-hackathon/blob/master/task-12/app_running.gif)
 
 
+*An example of a fully ported app from Ethereum to Polyjuice can be found on https://github.com/leomanza/nervos-hackathon/tree/master/app-on-godwoken*
 
 
 
