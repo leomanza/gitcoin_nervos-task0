@@ -1,5 +1,5 @@
 # Nervos Blockchain workshop. 
-## APP ported to Godwoken.
+## Example APP on Ethereum to be ported to Godwoken.
 
 Start UI:
 
