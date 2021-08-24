@@ -52,8 +52,8 @@ Godwoken is designed to be used with a second framework which defines the progra
 
  1. Clone your dApp or open it locally.
  ```
- git clone https://github.com/leomanza/nervos-hackathon/tree/master/app-on-godwoken
- cd app-on-godwoken
+ git clone https://github.com/leomanza/nervos-hackathon/tree/master/app-ethereum
+ cd app-ethereum
  ```
  2. Install dependencies
  ```
