@@ -63,7 +63,7 @@ Godwoken is designed to be used with a second framework which defines the progra
  ### Install Polyjuice Dependencies
  Install the required dependencies for working with Godwoken and Polyjuice.
   ```
- cd app-on-godwoken
+ cd app-ethereum
  yarn add @polyjuice-provider/web3@0.0.1-rc7 nervos-godwoken-integration@0.0.6
   ```
  - @polyjuice-provider/web3 is a custom Polyjuice web3 provider. It is required for interaction with Nervos' Layer 2 smart contracts.
@@ -132,14 +132,14 @@ const tx = await this.contract.methods.add(value).send({
 ### Compile the contract and run the app
 Open a new terminal an run:
 ```
-cd app-on-godwoken
+cd app-ethereum
 yarn
 yarn build
 yarn ui
 ```
 Open another terminal to run ganache
 ```
-cd app-on-godwoken
+cd app-ethereum
 yarn start:ganache
 ```
 
