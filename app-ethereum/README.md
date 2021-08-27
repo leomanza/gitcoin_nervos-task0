@@ -1,5 +1,5 @@
 # Nervos Blockchain workshop. 
-## Example APP on Ethereum to be ported to Godwoken.
+## Example APP on Ethereum to be ported to Polyjuice.
 
 Start UI:
 

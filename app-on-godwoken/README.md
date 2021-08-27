@@ -1,5 +1,5 @@
 # Nervos Blockchain workshop. 
-## APP ported to Godwoken.
+## APP ported to Polyjuice.
 
 Start UI:
 

@@ -52,8 +52,8 @@ Godwoken is designed to be used with a second framework which defines the progra
 
  1. Clone your dApp or open it locally.
  ```
- git clone https://github.com/leomanza/nervos-hackathon/tree/master/app-on-godwoken
- cd app-on-godwoken
+ git clone https://github.com/leomanza/nervos-hackathon/tree/master/app-ethereum
+ cd app-ethereum
  ```
  2. Install dependencies
  ```
@@ -63,7 +63,7 @@ Godwoken is designed to be used with a second framework which defines the progra
  ### Install Polyjuice Dependencies
  Install the required dependencies for working with Godwoken and Polyjuice.
   ```
- cd app-on-godwoken
+ cd app-ethereum
  yarn add @polyjuice-provider/web3@0.0.1-rc7 nervos-godwoken-integration@0.0.6
   ```
  - @polyjuice-provider/web3 is a custom Polyjuice web3 provider. It is required for interaction with Nervos' Layer 2 smart contracts.
@@ -107,13 +107,13 @@ const web3 = new Web3(provider);
 Godwoken requires the gas limit to be set when sending transactions. This may not always be the case in the future, but it is a requirement for the current version on the Testnet.
 To accomodate for this, we can make a simple change to default the gas limit to 6000000 for the user when they make transactions.
 
- 1. Create a constant that contains the gas property used by MetaMask and include the code above in the top region of \src\lib\contracts\TodosWrapper.ts
+ a. Create a constant that contains the gas property used by MetaMask and include the code above in the top region of \src\lib\contracts\TodosWrapper.ts
 ```
 const DEFAULT_SEND_OPTIONS = {
     gas: 6000000
 };
 ```
- 2. Add the constant into the object passed to *add* function as the default values:
+ b. Add the constant into the object passed to *add* function as the default values:
 ```
 const tx = await this.contract.methods.add(value).send({
     ...DEFAULT_SEND_OPTIONS,
@@ -132,14 +132,14 @@ const tx = await this.contract.methods.add(value).send({
 ### Compile the contract and run the app
 Open a new terminal an run:
 ```
-cd app-on-godwoken
+cd app-ethereum
 yarn
 yarn build
 yarn ui
 ```
 Open another terminal to run ganache
 ```
-cd app-on-godwoken
+cd app-ethereum
 yarn start:ganache
 ```
 
